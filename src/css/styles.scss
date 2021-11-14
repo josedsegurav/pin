@@ -1,0 +1,20 @@
+/*Funciones de Bootstrap*/
+@import "../../node_modules/bootstrap/scss/functions";
+
+/*Archivo default*/
+@import'default';
+
+/*Archivos de variables y mixins de Bootstrap*/
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/mixins";
+
+/*Archivo del recurso a importar de bootstrap*/
+@import "../../node_modules/bootstrap/scss/accordion";
+
+/*archivos de estilo personalizado*/
+@import'variables';
+@import'header';
+@import'main';
+
+
+
