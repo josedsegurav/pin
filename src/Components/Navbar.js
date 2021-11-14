@@ -8,11 +8,12 @@ export default function Navbar (){
 
   const [currImg, setCurrImg] = useState(0);
 
-  const handleForward = () => {
-    if(currImg !== headerImgs.length -1){
-    setCurrImg(currImg + 1)
-  }
-  else setCurrImg(0)
+  function handleForward() {
+    if (currImg !== headerImgs.length - 1) {
+      setCurrImg(currImg + 1);
+    }
+    else
+      setCurrImg(0);
   }
 
   return(

@@ -40,6 +40,7 @@ function Contact(){
     async function handleSubmit(){
         let formData = {name,email,phone,message}
 
+        //let result = await fetch("http://localhost:8000/api/form",{
         let result = await fetch("https://laravel-api-josesegura.herokuapp.com/api/form",{
         method:'POST',
         body: JSON.stringify(formData),
