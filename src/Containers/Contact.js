@@ -1,6 +1,4 @@
 import React ,{useState} from 'react';
-/* import axios from 'axios'; */
-/* import Form from '../Components/Form'; */
 import contactImg from '../images/contact-image.png';
 import { MDBInput } from 'mdb-react-ui-kit';
 import '../App.css';
@@ -106,7 +104,7 @@ function Contact(){
 <form className="margin_unset contact_form">
     <div className= "inputDiv">
       <MDBInput className="margin_unset form_input" label='Name' id='typeText' type='text' required value={name} onChange={(e)=>setName(e.target.value)} />
-        <span className="formError" >{validData.nameErr}</span>
+        <span className="formError" ></span>
     </div>
     <div className= "form_error">
       <MDBInput className="margin_unset form_input" label='Email' id='typeEmail' type='email' value={email} onChange={(e)=>setEmail(e.target.value)} />
