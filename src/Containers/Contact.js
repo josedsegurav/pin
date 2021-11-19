@@ -1,43 +1,56 @@
 import React ,{useState} from 'react';
 import contactImg from '../images/contact-image.png';
-import { MDBInput } from 'mdb-react-ui-kit';
 import '../App.css';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { sendEmail } from '../axios/indesx';
+
+
 
 function Contact(){
 
-    const [name,setName]=useState("")
+  /*   const [name,setName]=useState("")
     const [email,setEmail]=useState("")
     const [phone,setPhone]=useState("")
-    const [message,setMessage]=useState("")
-
-  /*   const [validForm,setValidForm]=useState({
-        field: {},
-        error: {},
-        send: "false"
-    }); */
-
-    /* const [validData, setValidData] = useState({
-        nameErr: "",
-        emailErr: "",
-        phoneErr: "",
-        messageErr: ""
-    })
-
-    const validate = () => {
-        let nameErr = "";
-        if (!setValidData) {
-            nameErr = "Ingresa tus nombres y apellidos."
-        }
-        if (nameErr) {
-            setValidData({nameErr});
-            return false;
-        }
-        return true;
+    const [message,setMessage]=useState("") */
+    const [error,setError]=useState(null);
 
 
-    } */
+    const schema = yup.object().shape({
+        name: yup.string().required('Ingresa tus nombres y apellidos.'),
+        email: yup.string().required('Ingresa tu correo electrónico.'),
+        phone: yup.string().required('Ingresa tu número de teléfono.'),
+        message: yup.string().required('Ingresa un mensaje.'),
+      });
 
-    async function handleSubmit(){
+    const {register, handleSubmit, formState:{errors}} = useForm({
+        resolver: yupResolver(schema),
+    });
+
+    async function submitValidation (data) {
+
+         //let result = await fetch("http://localhost:8000/api/form",{
+            let result = await fetch("https://laravel-api-josesegura.herokuapp.com/api/form",{
+                method:'POST',
+                body: JSON.stringify(data),
+                headers:{
+                    "Content-Type":'application/json',
+                    "Accept":'application/json'
+                }
+            }); if(result.ok) {
+                alert('Datos Guardados')
+            }
+                result= await result.json()
+                result = sendEmail(data)
+                .catch(err => {
+                    alert("Algo salio mal en el envio del correo");
+                })
+    }
+
+
+   /*  async function sendForm(){
+
         let formData = {name,email,phone,message}
 
         //let result = await fetch("http://localhost:8000/api/form",{
@@ -51,48 +64,9 @@ function Contact(){
     })
         result= await result.json()
         console.warn(result)
-    }
-
-
-
-    
-
-       /*  validateForm (){
-            let field = this.state.field;
-            let error ={};
-            let validForm = true;
-
-            if (!field["name"]){
-                validForm = false;
-                error["name"] = "Ingresa tus nombres y apellidos."
-            }
-
-            
-            if (!field["email"]){
-                validForm = false;
-                error["email"] = "Ingresa tu correo electrónico."
-            }
-
-            
-            if (!field["phone"]){
-                validForm = false;
-                error["phone"] = "Ingresa tu número de teléfono."
-            }
-
-            
-            if (!field["message"]){
-                validForm = false;
-                error["message"] = "Ingresa un mensaje."
-            }
-
-            this.setState({
-                error: error
-            });
-
-            return validForm;
-        }
-
+        result = sendEmail(formData)
     } */
+
 
     return(
         <section id="contact">
@@ -102,24 +76,24 @@ function Contact(){
                 Get in touch <br /><span className="margin_unset">We are hiring!</span>
             </h2>
 
-<form className="margin_unset contact_form">
+<form onSubmit={handleSubmit(submitValidation)} className="margin_unset contact_form">
     <div className= "inputDiv">
-      <MDBInput className="margin_unset form_input" label='Name' id='typeText' type='text' required value={name} onChange={(e)=>setName(e.target.value)} />
-        <span className="formError" ></span>
+        <input className="margin_unset form_input" type="text" name="name" placeholder="Name" {...register('name')} />
+      <p className="form_error" > {errors.name?.message} </p>
     </div>
-    <div className= "form_error">
-      <MDBInput className="margin_unset form_input" label='Email' id='typeEmail' type='email' value={email} onChange={(e)=>setEmail(e.target.value)} />
-      <span>Error</span>
+    <div className= "inputDiv">
+    <input className="margin_unset form_input" type="text" name="email" placeholder="Email" {...register('email')} />
+      <p className="form_error"> {errors.email?.message} </p>
       </div>
-      <div className= "form_error">
-      <MDBInput className="margin_unset form_input" label='Phone' id='typePhone' type='tel' value={phone} onChange={(e)=>setPhone(e.target.value)} />
-      <span>Error</span>
+      <div className= "inputDiv">
+      <input className="margin_unset form_input" type="text" name="phone" placeholder="Phone" {...register('phone')} />
+      <p className="form_error"> {errors.phone?.message} </p>
       </div>
-      <div className= "form_error">
-      <MDBInput className="margin_unset form_input" label='Message' id='textAreaExample' textarea rows={4} value={message} onChange={(e)=>setMessage(e.target.value)} />
-      <span>Error</span>
+      <div className= "inputDiv">
+      <input className="margin_unset form_input" type="text" name="message" placeholder="Message" {...register('message')}/>
+      <p className="form_error"> {errors.message?.message} </p>
       </div>
-      <button onClick={handleSubmit} className="header__button contact_button" >Send</button>
+      <button type="submit"  className="header__button contact_button">Send</button>
       </form>
         </div>
         
